@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # Central PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: ibvap-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ibvap_user
+      POSTGRES_PASSWORD: ibvap_password
+      POSTGRES_DB: ibvap_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Central Backend API & WebSocket Gateway
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: ibvap-backend
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://ibvap_user:ibvap_password@postgres:5432/ibvap_db
+      SECRET_KEY: supersecretkey-ibvap-sih26187-border-security-change-in-production
+      BOP_ID: BOP-DHARCHULA-01
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./storage:/app/storage
+
+  # Frontend Dashboard
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ibvap-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
