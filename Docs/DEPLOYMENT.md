@@ -25,6 +25,14 @@
 - **Core services:** API gateway, PostgreSQL/TimescaleDB, MinIO, vector DB, Kafka/Redis, monitoring stack (Prometheus + Grafana).
 - **Networking:** central services should sit behind the same auth/RBAC boundary as the API — no direct public exposure of the database or object storage.
 
+## Web deployment
+
+The `vercel.json` configuration can deploy the React frontend and HTTP FastAPI endpoints. Configure `SECRET_KEY`, `DATABASE_URL`, `CORS_ORIGINS`, and any storage settings as Vercel environment variables before deploying.
+
+Vercel serverless functions do not provide a persistent WebSocket server. The frontend `/ws` live-alert channel therefore requires the Docker or central deployment, or a separate realtime gateway. Vercel deployment should be treated as an HTTP/API preview unless that gateway is configured.
+
+Do not use the Vercel `/tmp` SQLite and storage defaults for production data. They are writable but ephemeral; use managed PostgreSQL and persistent object storage for production.
+
 ## Configuration
 
 Environment variables (indicative — finalize alongside actual service implementation):

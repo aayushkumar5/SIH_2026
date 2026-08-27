@@ -1,5 +1,4 @@
 import os
-from typing import List
 from pydantic_settings import BaseSettings
 
 
@@ -11,7 +10,7 @@ class Settings(BaseSettings):
     VERSION: str = "1.0.0"
     API_V1_STR: str = "/api/v1"
     
-    SECRET_KEY: str = os.getenv("SECRET_KEY", "supersecretkey-ibvap-sih26187-border-security-2026")
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "dev-only-change-this-secret")
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
     
@@ -22,7 +21,7 @@ class Settings(BaseSettings):
     )
     
     # CORS Origins
-    CORS_ORIGINS: List[str] = ["*"]
+    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:3000"
     
     # Storage Paths
     STORAGE_DIR: str = os.getenv("STORAGE_DIR", "/tmp/storage" if is_vercel else "./storage")
@@ -38,3 +37,6 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+if is_vercel and settings.SECRET_KEY == "dev-only-change-this-secret":
+    raise RuntimeError("SECRET_KEY must be configured in the Vercel environment")

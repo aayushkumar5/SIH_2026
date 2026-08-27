@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Central PostgreSQL Database
   postgres:
@@ -7,9 +5,9 @@ services:
     container_name: ibvap-postgres
     restart: always
     environment:
-      POSTGRES_USER: ibvap_user
-      POSTGRES_PASSWORD: ibvap_password
-      POSTGRES_DB: ibvap_db
+      POSTGRES_USER: ${POSTGRES_USER:-ibvap_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-ibvap_db}
     ports:
       - "5432:5432"
     volumes:
@@ -23,9 +21,9 @@ services:
     container_name: ibvap-backend
     restart: always
     environment:
-      DATABASE_URL: postgresql://ibvap_user:ibvap_password@postgres:5432/ibvap_db
-      SECRET_KEY: supersecretkey-ibvap-sih26187-border-security-change-in-production
-      BOP_ID: BOP-DHARCHULA-01
+      DATABASE_URL: postgresql://${POSTGRES_USER:-ibvap_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ibvap_db}
+      SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env}
+      BOP_ID: ${BOP_ID:-BOP-DHARCHULA-01}
     ports:
       - "8000:8000"
     depends_on:
