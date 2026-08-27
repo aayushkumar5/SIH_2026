@@ -1,6 +1,6 @@
 import React from 'react';
 import { AuditRecord } from '../types';
-import { AuditVerifier } from '../components/AuditVerifier';
+import { AuditVerifier } from '../components/audit/AuditVerifier';
 
 interface AuditPageProps {
   chain: AuditRecord[];

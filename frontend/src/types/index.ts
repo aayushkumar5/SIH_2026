@@ -1,5 +1,7 @@
 export type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
 
+export type UserRole = 'COMMANDER' | 'OPERATOR' | 'AUDITOR' | 'ADMIN';
+
 export type EventType =
   | 'INTRUSION'
   | 'TRIPWIRE_CROSS'
@@ -13,6 +15,23 @@ export type EventType =
   | 'WATCHLIST_FACE'
   | 'CAMERA_OFFLINE'
   | 'SYSTEM_ERROR';
+
+export interface User {
+  id: number;
+  username: string;
+  email: string;
+  full_name?: string;
+  role: UserRole;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface AuthState {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+}
 
 export interface Camera {
   id: string;
@@ -73,21 +92,45 @@ export interface AlertItem {
 
 export interface PlateWatchlistItem {
   id: string;
-  category: string;
+  category: 'STOLEN' | 'WANTED' | 'SUSPICIOUS' | 'HIGH_RISK' | 'VIP';
   reason?: string;
   added_by?: string;
   is_active: boolean;
   created_at: string;
 }
 
+export interface PlateDetectionEvent {
+  id: string;
+  plate_number: string;
+  plate_format: 'STANDARD' | 'BHARAT_SERIES' | 'MILITARY' | 'OTHER';
+  vehicle_type: 'SEDAN' | 'SUV' | 'TRUCK' | 'MOTORCYCLE' | 'BUS';
+  camera_id: string;
+  timestamp: string;
+  confidence: number;
+  is_watchlist_match: boolean;
+  category?: string;
+  speed_kmh?: number;
+}
+
 export interface FaceWatchlistItem {
   id: string;
   name: string;
-  category: string;
+  category: 'WANTED' | 'PERSON_OF_INTEREST' | 'CROSS_BORDER_SMUGGLER' | 'SECURITY_RISK' | 'AUTHORIZED';
   notes?: string;
   photo_path?: string;
+  embedding?: number[];
   is_active: boolean;
   created_at: string;
+}
+
+export interface FaceMatchResult {
+  suspect_id: string;
+  suspect_name: string;
+  category: string;
+  similarity_score: number;
+  is_match: boolean;
+  confidence_level: 'HIGH' | 'MEDIUM' | 'LOW' | 'NO_MATCH';
+  notes?: string;
 }
 
 export interface AuditRecord {
@@ -111,7 +154,7 @@ export interface AuditVerificationResult {
 }
 
 export interface DashboardSummary {
-  threat_level: string;
+  threat_level: 'NORMAL' | 'MODERATE' | 'ELEVATED' | 'CRITICAL';
   total_cameras: number;
   online_cameras: number;
   active_alerts: number;
@@ -131,3 +174,29 @@ export interface SystemMetrics {
   bop_id: string;
   timestamp: string;
 }
+
+export interface AISettings {
+  yolo_confidence: number;
+  bytetrack_max_age: number;
+  loitering_default_seconds: number;
+  night_enhancement_clip: number;
+  face_match_threshold: number;
+  edge_sync_interval_seconds: number;
+  sound_alert_enabled: boolean;
+  sound_alert_volume: number;
+}
+
+export type TabType =
+  | 'dashboard'
+  | 'live'
+  | 'alerts'
+  | 'investigation'
+  | 'anpr'
+  | 'faces'
+  | 'cameras'
+  | 'zones'
+  | 'map'
+  | 'analytics'
+  | 'audit'
+  | 'users'
+  | 'settings';
