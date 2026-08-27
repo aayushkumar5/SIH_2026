@@ -114,19 +114,29 @@ def seed_initial_data():
             db.add_all(plates)
 
         db.commit()
+    except Exception:
+        pass
     finally:
         db.close()
 
 
+def initialize_app_state():
+    try:
+        os.makedirs(settings.SNAPSHOT_DIR, exist_ok=True)
+        os.makedirs(settings.CLIP_DIR, exist_ok=True)
+        Base.metadata.create_all(bind=engine)
+        seed_initial_data()
+    except Exception:
+        pass
+
+
+# Ensure initialization on import for serverless environments (e.g. Vercel)
+initialize_app_state()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Ensure storage dirs exist
-    os.makedirs(settings.SNAPSHOT_DIR, exist_ok=True)
-    os.makedirs(settings.CLIP_DIR, exist_ok=True)
-    # Create DB tables
-    Base.metadata.create_all(bind=engine)
-    # Seed data
-    seed_initial_data()
+    initialize_app_state()
     yield
 
 
