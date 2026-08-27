@@ -63,3 +63,9 @@ Track per-BOP: camera uptime, edge inference FPS, sync lag (time since last succ
 2. Add face/ANPR/behavior modules once the core is validated.
 3. Expand to full camera coverage at the pilot BOP.
 4. Roll out to additional BOPs, feeding lessons learned (threshold tuning, hardware sizing) back into the config before each new site.
+
+For local or edge AI processing, install the optional computer-vision dependencies separately:
+
+```bash
+pip install -r requirements-ai.txt
+```
