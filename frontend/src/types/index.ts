@@ -186,9 +186,21 @@ export interface AISettings {
   sound_alert_volume: number;
 }
 
+export interface VideoDetectionItem {
+  id: string;
+  timestampSeconds: number;
+  objectClass: 'person' | 'vehicle';
+  subClass?: string;
+  confidence: number;
+  trackId: number;
+  bbox: [number, number, number, number]; // [x, y, w, h]
+  speedKmh?: number;
+}
+
 export type TabType =
   | 'dashboard'
   | 'live'
+  | 'video-analysis'
   | 'alerts'
   | 'investigation'
   | 'anpr'

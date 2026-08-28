@@ -18,6 +18,7 @@ import { ConnectionBanner } from './components/common/ConnectionBanner';
 
 import { DashboardPage } from './pages/DashboardPage';
 import { LiveMonitorPage } from './pages/LiveMonitorPage';
+import { VideoAnalysisPage } from './pages/VideoAnalysisPage';
 import { AlertsPage } from './pages/AlertsPage';
 import { InvestigationPage } from './pages/InvestigationPage';
 import { ANPRPage } from './pages/ANPRPage';
@@ -178,6 +179,7 @@ const MainLayout: React.FC = () => {
               onAlertAction={handleAlertAction}
               onRefresh={loadData}
               onNavigateToLive={() => setActiveTab('live')}
+              onNavigateToVideoAnalysis={() => setActiveTab('video-analysis')}
             />
           )}
 
@@ -186,8 +188,11 @@ const MainLayout: React.FC = () => {
               cameras={cameras}
               zones={zones}
               lastEvent={lastEvent}
+              onNavigateToVideoAnalysis={() => setActiveTab('video-analysis')}
             />
           )}
+
+          {activeTab === 'video-analysis' && <VideoAnalysisPage />}
 
           {activeTab === 'alerts' && (
             <AlertsPage alerts={alerts} onAlertAction={handleAlertAction} />

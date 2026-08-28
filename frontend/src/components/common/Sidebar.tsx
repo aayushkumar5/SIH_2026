@@ -2,6 +2,7 @@ import React from 'react';
 import {
   LayoutDashboard,
   Tv,
+  FileVideo,
   Bell,
   Search,
   Car,
@@ -34,6 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const primaryNav = [
     { id: 'dashboard', label: 'Command Overview', icon: LayoutDashboard },
     { id: 'live', label: 'Surveillance Desk', icon: Tv },
+    { id: 'video-analysis', label: 'Video Analysis (Upload)', icon: FileVideo },
     { id: 'alerts', label: 'Incident Center', icon: Bell, badge: activeAlertsCount },
     { id: 'map', label: 'Tactical Border Map', icon: MapPin },
     { id: 'investigation', label: 'Forensic Search', icon: Search },

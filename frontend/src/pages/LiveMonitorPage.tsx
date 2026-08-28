@@ -16,12 +16,14 @@ interface LiveMonitorPageProps {
   cameras: Camera[];
   zones: Zone[];
   lastEvent: EventItem | null;
+  onNavigateToVideoAnalysis?: () => void;
 }
 
 export const LiveMonitorPage: React.FC<LiveMonitorPageProps> = ({
   cameras,
   zones,
   lastEvent,
+  onNavigateToVideoAnalysis,
 }) => {
   const [layout, setLayout] = useState<'1x1' | '2x2' | '3x3'>('2x2');
   const [nightModeAll, setNightModeAll] = useState(false);
@@ -93,6 +95,16 @@ export const LiveMonitorPage: React.FC<LiveMonitorPageProps> = ({
             <Layers className="w-3.5 h-3.5" />
             <span>AI OVERLAYS: {showOverlays ? 'ACTIVE' : 'HIDDEN'}</span>
           </button>
+
+          {onNavigateToVideoAnalysis && (
+            <button
+              onClick={onNavigateToVideoAnalysis}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 text-blue-300 font-mono font-bold transition-all shadow-sm"
+            >
+              <CameraIcon className="w-3.5 h-3.5 text-cyan-400" />
+              <span>UPLOAD VIDEO</span>
+            </button>
+          )}
         </div>
       </div>
 

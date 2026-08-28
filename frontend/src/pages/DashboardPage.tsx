@@ -32,6 +32,7 @@ interface DashboardPageProps {
   onAlertAction: (id: string, action: 'ACKNOWLEDGE' | 'RESOLVE' | 'DISMISS', notes?: string) => Promise<void>;
   onRefresh: () => void;
   onNavigateToLive: () => void;
+  onNavigateToVideoAnalysis?: () => void;
 }
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({
@@ -43,6 +44,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   onAlertAction,
   onRefresh,
   onNavigateToLive,
+  onNavigateToVideoAnalysis,
 }) => {
   const { playCriticalAlert } = useAudioAlarm();
   const [sectorLockdown, setSectorLockdown] = useState(false);
@@ -182,6 +184,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <Volume2 className="w-3.5 h-3.5 text-blue-400" />
             TEST TACTICAL ALARM
           </button>
+
+          {onNavigateToVideoAnalysis && (
+            <button
+              onClick={onNavigateToVideoAnalysis}
+              className="px-3 py-1.5 rounded-lg bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/50 text-blue-300 font-mono text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm"
+            >
+              <Activity className="w-3.5 h-3.5 text-cyan-400" />
+              UPLOAD & ANALYZE VIDEO
+            </button>
+          )}
 
           <button
             onClick={handleRefresh}
